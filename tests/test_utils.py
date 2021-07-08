@@ -19,14 +19,11 @@ from ttctext.utils import add_two_numbers
 
 
 class TestUtils:  # noqa: D101
-
-    @pytest.mark.parametrize('number_left, number_right', [
-        (None, 1), (1, None), (None, None)
-    ])
+    @pytest.mark.parametrize(
+        "number_left, number_right", [(None, 1), (1, None), (None, None)]
+    )
     def test_add_two_numbers_no_input(
-            self,
-            number_left: int,
-            number_right: int
+        self, number_left: int, number_right: int
     ) -> None:
         """Basic input validation."""
         with pytest.raises(ValueError):

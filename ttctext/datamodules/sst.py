@@ -17,7 +17,7 @@ class SSTDataModule(pl.LightningDataModule):
 
     def __init__(
         self,
-        data_dir: str = '.',
+        data_dir: str = ".",
         val_split: int = 1000,
         num_workers: int = 2,
         batch_size: int = 64,
@@ -54,8 +54,8 @@ class SSTDataModule(pl.LightningDataModule):
 
         train_trans, test_trans = self.default_transforms
 
-        train_dataset = self.SST(self.data_dir, split='train', **train_trans)
-        test_dataset = self.SST(self.data_dir, split='test', **test_trans)
+        train_dataset = self.SST(self.data_dir, split="train", **train_trans)
+        test_dataset = self.SST(self.data_dir, split="test", **test_trans)
 
         train_length = len(train_dataset)
 
@@ -74,7 +74,7 @@ class SSTDataModule(pl.LightningDataModule):
             shuffle=True,
             num_workers=self.num_workers,
             pin_memory=True,
-            collate_fn=self.collator_fn
+            collate_fn=self.collator_fn,
         )
         return loader
 
@@ -86,7 +86,7 @@ class SSTDataModule(pl.LightningDataModule):
             shuffle=False,
             num_workers=self.num_workers,
             pin_memory=True,
-            collate_fn=self.collator_fn
+            collate_fn=self.collator_fn,
         )
         return loader
 
@@ -98,7 +98,7 @@ class SSTDataModule(pl.LightningDataModule):
             shuffle=False,
             num_workers=self.num_workers,
             pin_memory=True,
-            collate_fn=self.collator_fn
+            collate_fn=self.collator_fn,
         )
         return loader
 
@@ -108,16 +108,12 @@ class SSTDataModule(pl.LightningDataModule):
     @property
     def default_transforms(self):
         train_transforms = {
-            'text_transforms': text_f.sequential_transforms(
-                random_deletion,
-                random_swap
+            "text_transforms": text_f.sequential_transforms(
+                random_deletion, random_swap
             ),
-            'label_transforms': None
+            "label_transforms": None,
         }
-        test_transforms = {
-            'text_transforms': None,
-            'label_transforms': None
-        }
+        test_transforms = {"text_transforms": None, "label_transforms": None}
 
         return train_transforms, test_transforms
 

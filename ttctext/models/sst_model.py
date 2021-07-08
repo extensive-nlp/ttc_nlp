@@ -6,7 +6,6 @@ from pytorch_lightning.metrics.functional import accuracy
 
 
 class SSTModel(pl.LightningModule):
-
     def __init__(self, hparams, *args, **kwargs):
         super().__init__()
 
@@ -15,14 +14,15 @@ class SSTModel(pl.LightningModule):
         self.num_classes = self.hparams.output_dim
 
         self.embedding = nn.Embedding(
-            self.hparams.input_dim, self.hparams.embedding_dim)
+            self.hparams.input_dim, self.hparams.embedding_dim
+        )
 
         self.lstm = nn.LSTM(
             self.hparams.embedding_dim,
             self.hparams.hidden_dim,
             num_layers=self.hparams.num_layers,
             dropout=self.hparams.dropout,
-            batch_first=True
+            batch_first=True,
         )
 
         self.proj_layer = nn.Sequential(
@@ -37,8 +37,14 @@ class SSTModel(pl.LightningModule):
         self.loss = nn.CrossEntropyLoss()
 
     def init_state(self, sequence_length):
-        return (torch.zeros(self.hparams.num_layers, sequence_length, self.hparams.hidden_dim).to(self.device),
-                torch.zeros(self.hparams.num_layers, sequence_length, self.hparams.hidden_dim).to(self.device))
+        return (
+            torch.zeros(
+                self.hparams.num_layers, sequence_length, self.hparams.hidden_dim
+            ).to(self.device),
+            torch.zeros(
+                self.hparams.num_layers, sequence_length, self.hparams.hidden_dim
+            ).to(self.device),
+        )
 
     def forward(self, text, text_length, prev_state=None):
         # [batch size, sentence length] => [batch size, sentence len, embedding size]
@@ -46,9 +52,7 @@ class SSTModel(pl.LightningModule):
 
         # packs the input for faster forward pass in RNN
         packed = torch.nn.utils.rnn.pack_padded_sequence(
-            embedded, text_length.to('cpu'),
-            enforce_sorted=False,
-            batch_first=True
+            embedded, text_length.to("cpu"), enforce_sorted=False, batch_first=True
         )
 
         # [batch size sentence len, embedding size] =>
@@ -86,15 +90,14 @@ class SSTModel(pl.LightningModule):
         pred = torch.argmax(F.log_softmax(logits, dim=1), dim=1)
         acc = accuracy(pred, label)
 
-        metric = {'loss': loss, 'acc': acc}
+        metric = {"loss": loss, "acc": acc}
 
         return metric
 
     def training_step(self, batch, batch_idx):
         metrics = self.shared_step(batch, batch_idx)
 
-        log_metrics = {
-            'train_loss': metrics['loss'], 'train_acc': metrics['acc']}
+        log_metrics = {"train_loss": metrics["loss"], "train_acc": metrics["acc"]}
 
         self.log_dict(log_metrics, prog_bar=True)
 
@@ -106,10 +109,10 @@ class SSTModel(pl.LightningModule):
         return metrics
 
     def validation_epoch_end(self, outputs):
-        acc = torch.stack([x['acc'] for x in outputs]).mean()
-        loss = torch.stack([x['loss'] for x in outputs]).mean()
+        acc = torch.stack([x["acc"] for x in outputs]).mean()
+        loss = torch.stack([x["loss"] for x in outputs]).mean()
 
-        log_metrics = {'val_loss': loss, 'val_acc': acc}
+        log_metrics = {"val_loss": loss, "val_acc": acc}
 
         self.log_dict(log_metrics, prog_bar=True)
 
@@ -119,17 +122,19 @@ class SSTModel(pl.LightningModule):
         return self.validation_step(batch, batch_idx)
 
     def test_epoch_end(self, outputs):
-        accuracy = torch.stack([x['acc'] for x in outputs]).mean()
+        accuracy = torch.stack([x["acc"] for x in outputs]).mean()
 
-        self.log('hp_metric', accuracy)
+        self.log("hp_metric", accuracy)
 
-        self.log_dict({'test_acc': accuracy}, prog_bar=True)
+        self.log_dict({"test_acc": accuracy}, prog_bar=True)
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.hparams.lr)
         lr_scheduler = {
-            'scheduler': torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=10, verbose=True),
-            'monitor': 'train_loss',
-            'name': 'scheduler'
+            "scheduler": torch.optim.lr_scheduler.ReduceLROnPlateau(
+                optimizer, patience=10, verbose=True
+            ),
+            "monitor": "train_loss",
+            "name": "scheduler",
         }
         return [optimizer], [lr_scheduler]

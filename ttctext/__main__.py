@@ -7,5 +7,5 @@ a script, or from an interactive prompt.
 
 from ttctext.utils import add_two_numbers
 
-print('Executed from command line...')
-print(f'2 + 2 equals {add_two_numbers(2, 2)}')
+print("Executed from command line...")
+print(f"2 + 2 equals {add_two_numbers(2, 2)}")
