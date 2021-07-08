@@ -13,6 +13,7 @@ from tqdm.auto import tqdm
 
 import ttctext.datasets.utils.functional as text_f
 
+
 class StanfordSentimentTreeBank(Dataset):
     """The Standford Sentiment Tree Bank Dataset
     Stanford Sentiment Treebank V1.0
@@ -82,11 +83,14 @@ class StanfordSentimentTreeBank(Dataset):
                 for line in data:
                     yield transforms(line)
 
-            return build_vocab_from_iterator(apply_transforms(data), specials=('<pad>', '<unk>', '<sos>', '<eos>'))
+            return build_vocab_from_iterator(
+                apply_transforms(data), specials=("<pad>", "<unk>", "<sos>", "<eos>")
+            )
 
         if self.vocab is None:
             # vocab is always built on the train dataset
             self.vocab = build_vocab(self.dataset_train["phrase"], self.text_transform)
+            self.vocab.set_default_index(vocab["<unk>"])
 
         if text_transforms is not None:
             self.text_transform = text_f.sequential_transforms(
