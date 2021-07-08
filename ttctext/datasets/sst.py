@@ -90,7 +90,7 @@ class StanfordSentimentTreeBank(Dataset):
         if self.vocab is None:
             # vocab is always built on the train dataset
             self.vocab = build_vocab(self.dataset_train["phrase"], self.text_transform)
-            self.vocab.set_default_index(vocab["<unk>"])
+            self.vocab.set_default_index(self.vocab["<unk>"])
 
         if text_transforms is not None:
             self.text_transform = text_f.sequential_transforms(
