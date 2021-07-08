@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/codespace/.local/share/virtualenvs/ttc_nlp-lKCVHAsh/bin/python3",
+    "python.pythonPath": ".venv/bin/python",
     "python.analysis.extraPaths": [
         "ttctext",
         "tests",

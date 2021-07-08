@@ -2,6 +2,12 @@
 
 ## Development
 
+To use pipenv in vscode
+
+```bash
+export PIPENV_VENV_IN_PROJECT=1
+```
+
 ```bash
 pipenv install
 ```
