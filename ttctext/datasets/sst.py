@@ -7,31 +7,11 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 from torchtext.data.utils import get_tokenizer
+from torchtext.vocab import build_vocab_from_iterator
 from torchtext.vocab import Vocab
 from tqdm.auto import tqdm
 
 import ttctext.datasets.utils.functional as text_f
-
-
-def build_vocab_from_iterator(iterator, num_lines=None):
-    """
-    Build a Vocab from an iterator.
-    Args:
-        iterator: Iterator used to build Vocab. Must yield list or iterator of tokens.
-        num_lines: The expected number of elements returned by the iterator.
-            (Default: None)
-            Optionally, if known, the expected number of elements can be passed to
-            this factory function for improved progress reporting.
-    """
-
-    counter = Counter()
-    with tqdm(unit_scale=0, unit="lines", total=num_lines) as t:
-        for tokens in iterator:
-            counter.update(tokens)
-            t.update(1)
-    word_vocab = Vocab(counter)
-    return word_vocab
-
 
 class StanfordSentimentTreeBank(Dataset):
     """The Standford Sentiment Tree Bank Dataset
@@ -102,7 +82,7 @@ class StanfordSentimentTreeBank(Dataset):
                 for line in data:
                     yield transforms(line)
 
-            return build_vocab_from_iterator(apply_transforms(data), len(data))
+            return build_vocab_from_iterator(apply_transforms(data), specials=('<pad>', '<unk>', '<sos>', '<eos>'))
 
         if self.vocab is None:
             # vocab is always built on the train dataset
