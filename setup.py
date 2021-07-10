@@ -48,7 +48,7 @@ setup(
         "spacy>=3.1.0",
         "pandas>=1.3.0",
         "seaborn>=0.11.1",
-        "matplotlib>=3.4.2",
+        "matplotlib>=3.1.3",
         "tqdm>=4.61.2",
     ],
     # Licensing and copyright
