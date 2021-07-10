@@ -42,6 +42,7 @@ setup(
     install_requires=[
         "torch>=1.9.0",
         "torchtext>=0.10.0",
+        "torchmetrics>=0.4.1",
         "omegaconf>=2.1.0",
         "pytorch-lightning>=1.3.8",
         "gdown>=3.13.0",
