@@ -47,7 +47,7 @@ setup(
         "pytorch-lightning>=1.3.8",
         "gdown>=3.13.0",
         "spacy>=3.1.0",
-        "pandas>=1.3.0",
+        "pandas~=1.1.0",
         "seaborn>=0.11.1",
         "matplotlib>=3.1.3",
         "tqdm>=4.61.2",
