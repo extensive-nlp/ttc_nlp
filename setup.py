@@ -51,6 +51,7 @@ setup(
         "seaborn>=0.11.1",
         "matplotlib>=3.1.3",
         "tqdm>=4.61.2",
+        "scikit-learn~=0.24.2",
     ],
     # Licensing and copyright
     license="Apache 2.0",

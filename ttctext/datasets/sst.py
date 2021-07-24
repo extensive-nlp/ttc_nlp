@@ -7,8 +7,7 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 from torchtext.data.utils import get_tokenizer
-from torchtext.vocab import build_vocab_from_iterator
-from torchtext.vocab import Vocab
+from torchtext.vocab import Vocab, build_vocab_from_iterator
 from tqdm.auto import tqdm
 
 import ttctext.datasets.utils.functional as text_f

@@ -18,6 +18,12 @@ to update the dependencies
 pipenv update
 ```
 
+to get the shell
+
+```bash
+pipenv shell
+```
+
 to isort
 
 ```bash
