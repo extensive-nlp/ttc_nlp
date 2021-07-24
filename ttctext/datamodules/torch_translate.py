@@ -111,7 +111,8 @@ class TorchLanguageData(pl.LightningDataModule):
     """
 
     name = "PyTorch example language dataset"
-    zip_url = "https://download.pytorch.org/tutorial/data.zip"
+    # zip_url = "https://download.pytorch.org/tutorial/data.zip"
+    zip_url = "https://github.com/satyajitghana/TSAI-DeepNLP-END2.0/blob/main/10_Seq2Seq_Attention/data.zip?raw=true"
 
     def __init__(
         self,
